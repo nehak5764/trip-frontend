@@ -74,7 +74,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // ✅ use env, not localhost
 
 export default function JoinTrip() {
   const [code, setCode] = useState("");

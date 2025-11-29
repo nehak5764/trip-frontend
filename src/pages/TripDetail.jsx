@@ -148,7 +148,7 @@ import {
   ArrowLeftCircle,
 } from "lucide-react";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // ✅ use env, not localhost
 
 export default function TripDetail() {
   const { id } = useParams();

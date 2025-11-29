@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Read backend URL from environment variable
-const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
+const API_BASE = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
 // Create Axios instance
 const api = axios.create({

@@ -265,7 +265,7 @@ import { useAuth } from "../context/AuthContext";
 import { ArrowLeftCircle, Plus, User } from "lucide-react";
 import { BarChart, Bar, XAxis, ResponsiveContainer, Cell } from "recharts";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // ✅ use env, not localhost
 
 export default function PollsPage() {
   const { id } = useParams();

@@ -121,7 +121,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { getSocket } from "../socket";
 import axios from "axios";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // ✅ use env, not localhost
 
 export default function MessageList({ tripId, userId }) {
   const [messages, setMessages] = useState([]);

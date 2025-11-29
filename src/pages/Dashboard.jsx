@@ -235,7 +235,7 @@ import { useAuth } from "../context/AuthContext";
 import TripCountdown from "../components/TripCountdown";
 import WeatherToday from "../components/WeatherToday";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env-based API URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // ✅ use env-based API URL
 
 export default function Dashboard() {
   const { user, token } = useAuth();

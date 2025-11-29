@@ -393,7 +393,7 @@ import {
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env-based backend URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // ✅ use env-based backend URL
 
 export default function TripCard({ trip, onDelete, onUpdate }) {
   const { token, user } = useAuth();

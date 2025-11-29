@@ -92,7 +92,7 @@ import EmojiPicker from "emoji-picker-react";
 import { getSocket, emitEvent } from "../socket";
 import axios from "axios";
 
-const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // ✅ use env, not localhost
 
 export default function MessageInput({ tripId, userId }) {
   const [text, setText] = useState("");
