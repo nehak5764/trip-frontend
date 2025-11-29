@@ -101,6 +101,8 @@ import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -119,7 +121,10 @@ export default function Login() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", formData);
+      const res = await axios.post(
+        `${BACKEND_URL}/api/auth/login`,
+        formData
+      );
       if (res.data?.token) {
         login(res.data.user, res.data.token);
         navigate("/dashboard");

@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const BACKEND_URL = 'http://localhost:5000';
+const BACKEND_URL = import.meta.env.VITE_API_URL; // 🔥 use env, not localhost
 
 export default function ExpenseList({ tripId, token, expenses: parentExpenses }) {
   const [expenses, setExpenses] = useState(parentExpenses || []);
@@ -15,7 +15,7 @@ export default function ExpenseList({ tripId, token, expenses: parentExpenses })
       return;
     }
 
-    if (!tripId) return;
+    if (!tripId || !BACKEND_URL) return;
 
     const fetchExpenses = async () => {
       try {
@@ -24,7 +24,7 @@ export default function ExpenseList({ tripId, token, expenses: parentExpenses })
         });
         setExpenses(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
-        console.error('Error fetching expenses:', err);
+        console.error("Error fetching expenses:", err);
       } finally {
         setLoading(false);
       }
@@ -45,7 +45,10 @@ export default function ExpenseList({ tripId, token, expenses: parentExpenses })
     <div className="mt-6">
       <h2 className="text-xl font-bold mb-2">Expenses</h2>
       {expenses.map((e) => (
-        <div key={e._id || `${e.title}-${e.amount}-${Math.random()}`} className="flex justify-between p-2 border rounded mb-2">
+        <div
+          key={e._id || `${e.title}-${e.amount}-${Math.random()}`}
+          className="flex justify-between p-2 border rounded mb-2"
+        >
           <span>{e.title}</span>
           <span>₹ {e.amount}</span>
         </div>

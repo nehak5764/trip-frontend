@@ -74,7 +74,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function JoinTrip() {
   const [code, setCode] = useState("");
@@ -90,6 +90,7 @@ export default function JoinTrip() {
       const token = localStorage.getItem("token");
       if (!token) {
         alert("Please login first");
+        setLoading(false);
         return;
       }
 

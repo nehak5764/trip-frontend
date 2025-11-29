@@ -393,6 +393,8 @@ import {
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env-based backend URL
+
 export default function TripCard({ trip, onDelete, onUpdate }) {
   const { token, user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -437,9 +439,9 @@ export default function TripCard({ trip, onDelete, onUpdate }) {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        if (!trip.destination) return;
+        if (!trip.destination || !BACKEND_URL) return;
         const res = await axios.get(
-          `http://localhost:5000/api/weather/quick?location=${encodeURIComponent(
+          `${BACKEND_URL}/api/weather/quick?location=${encodeURIComponent(
             trip.destination
           )}`,
           { headers: { Authorization: `Bearer ${token}` } }
@@ -466,8 +468,8 @@ export default function TripCard({ trip, onDelete, onUpdate }) {
 
     try {
       const endpoint = isAdmin
-        ? `http://localhost:5000/api/trips/${trip._id}`
-        : `http://localhost:5000/api/trips/${trip._id}/leave`;
+        ? `${BACKEND_URL}/api/trips/${trip._id}`
+        : `${BACKEND_URL}/api/trips/${trip._id}/leave`;
 
       await axios.delete(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
@@ -499,7 +501,7 @@ export default function TripCard({ trip, onDelete, onUpdate }) {
     try {
       setLoading(true);
       const res = await axios.put(
-        `http://localhost:5000/api/trips/${trip._id}`,
+        `${BACKEND_URL}/api/trips/${trip._id}`,
         {
           title: newTitle,
           description: newDescription,
@@ -566,7 +568,8 @@ export default function TripCard({ trip, onDelete, onUpdate }) {
 
       {/* Title */}
       <h2 className="text-2xl font-bold bg-gradient-to-r from-[#f9f7e8] to-[#d4af37] bg-clip-text text-transparent mb-2 flex items-center gap-2 font-['Playfair_Display']">
-        <Info className="w-5 h-5 text-[#d4af37]" /> {trip.title || "Untitled Trip"}
+        <Info className="w-5 h-5 text-[#d4af37]" />{" "}
+        {trip.title || "Untitled Trip"}
       </h2>
 
       {/* Creator */}
@@ -695,7 +698,9 @@ export default function TripCard({ trip, onDelete, onUpdate }) {
               <Edit2 className="w-5 h-5" /> Edit Trip Details
             </h3>
 
-            <label className="block text-sm mb-1 text-[#f9f7e8]/70">Title</label>
+            <label className="block text-sm mb-1 text-[#f9f7e8]/70">
+              Title
+            </label>
             <input
               type="text"
               value={newTitle}

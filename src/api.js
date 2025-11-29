@@ -1,10 +1,10 @@
 
 import axios from "axios";
 
-// Base URL for backend
-const API_BASE = "http://localhost:5000/api";
+// Read backend URL from environment variable
+const API_BASE = `${import.meta.env.VITE_API_URL}/api`;
 
-// Create an Axios instance
+// Create Axios instance
 const api = axios.create({
   baseURL: API_BASE,
   headers: {
@@ -12,7 +12,7 @@ const api = axios.create({
   },
 });
 
-// Set the Authorization header dynamically
+// Dynamically set Authorization token
 export const setToken = (token) => {
   if (token) {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -31,9 +31,8 @@ export const getTripById = (id) => api.get(`/trips/${id}`);
 export const createTrip = (data) => api.post("/trips", data);
 
 /* -------------------- EXPENSES -------------------- */
-// ✅ FIXED: Send token properly in Authorization header
 export const addExpense = async ({ tripId, title, amount, token }) => {
-  return await axios.post(
+  return axios.post(
     `${API_BASE}/expenses`,
     { tripId, title, amount },
     {

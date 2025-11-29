@@ -148,7 +148,7 @@ import {
   ArrowLeftCircle,
 } from "lucide-react";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function TripDetail() {
   const { id } = useParams();
@@ -170,7 +170,7 @@ export default function TripDetail() {
         setLoading(false);
       }
     };
-    fetchTrip();
+    if (BACKEND_URL && token) fetchTrip();
   }, [id, token]);
 
   if (loading)

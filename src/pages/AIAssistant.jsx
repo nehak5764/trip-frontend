@@ -173,6 +173,8 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+
 export default function AiAssistant({ embedded = false }) {
   const { token } = useAuth();
   const [messages, setMessages] = useState([
@@ -192,17 +194,19 @@ export default function AiAssistant({ embedded = false }) {
 
   // ✅ Send message
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !BACKEND_URL) return;
 
     const userMessage = { role: "user", content: input };
-    setMessages((prev) => [...prev, userMessage]);
+    const previousMessages = [...messages, userMessage];
+
+    setMessages(previousMessages);
     setInput("");
     setLoading(true);
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/ai/chat",
-        { message: input, context: messages },
+        `${BACKEND_URL}/api/ai/chat`,
+        { message: input, context: previousMessages },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -246,7 +250,8 @@ export default function AiAssistant({ embedded = false }) {
             🤖 TripMate AI Assistant
           </h1>
           <p className="text-[#f9f7e8]/70 text-sm mt-1 font-['Poppins']">
-            Ask about destinations, budgets, and travel ideas — your luxury trip companion.
+            Ask about destinations, budgets, and travel ideas — your luxury trip
+            companion.
           </p>
         </div>
       )}

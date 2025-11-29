@@ -117,10 +117,11 @@
 
 
 
-
 import React, { useEffect, useState, useRef } from "react";
 import { getSocket } from "../socket";
 import axios from "axios";
+
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function MessageList({ tripId, userId }) {
   const [messages, setMessages] = useState([]);
@@ -134,7 +135,7 @@ export default function MessageList({ tripId, userId }) {
 
   // Join trip room + fetch messages
   useEffect(() => {
-    if (!tripId || !socket) return;
+    if (!tripId || !socket || !BACKEND_URL) return;
 
     const joinTrip = () => socket.emit("joinTrip", { tripId });
     if (socket.connected) joinTrip();
@@ -143,14 +144,18 @@ export default function MessageList({ tripId, userId }) {
     const fetchMessages = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:5000/api/messages/${tripId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const res = await axios.get(
+          `${BACKEND_URL}/api/messages/${tripId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setMessages(res.data);
       } catch (err) {
         console.error("Error fetching messages:", err);
       }
     };
+
     fetchMessages();
 
     const handleNewMessage = (msg) => setMessages((prev) => [...prev, msg]);

@@ -100,7 +100,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -116,10 +116,16 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const res = await axios.post(`${BACKEND_URL}/api/auth/forgot-password`, { email });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/auth/forgot-password`,
+        { email }
+      );
       setMessage(res.data.message);
       setLoading(false);
-      setTimeout(() => navigate("/reset-password", { state: { email } }), 2000);
+      setTimeout(
+        () => navigate("/reset-password", { state: { email } }),
+        2000
+      );
     } catch (err) {
       setLoading(false);
       setError(err.response?.data?.message || "Error sending OTP");

@@ -85,17 +85,14 @@
 // };
 
 // export default MessageInput;
-
-
-
-
-
 import React, { useState, useEffect, useRef } from "react";
 import { Box, IconButton, Paper } from "@mui/material";
 import { FaSmile, FaPaperPlane } from "react-icons/fa";
 import EmojiPicker from "emoji-picker-react";
 import { getSocket, emitEvent } from "../socket";
 import axios from "axios";
+
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function MessageInput({ tripId, userId }) {
   const [text, setText] = useState("");
@@ -127,15 +124,22 @@ export default function MessageInput({ tripId, userId }) {
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (!file || !tripId) return;
+    if (!file || !tripId || !BACKEND_URL) return;
 
     const formData = new FormData();
     formData.append("image", file);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const res = await axios.post(
+        `${BACKEND_URL}/api/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            // Authorization: `Bearer ${token}`, // add this if your upload route is protected
+          },
+        }
+      );
 
       const imageUrl = res.data.url;
 
@@ -273,3 +277,8 @@ export default function MessageInput({ tripId, userId }) {
     </div>
   );
 }
+
+
+
+
+

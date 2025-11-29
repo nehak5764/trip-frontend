@@ -130,7 +130,7 @@ import AddExpense from "../components/AddExpense";
 import ExpenseList from "../components/ExpenseList";
 import ExpenseSummary from "../components/ExpenseSummary";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function ExpensePage() {
   const { id } = useParams();
@@ -162,7 +162,7 @@ export default function ExpensePage() {
       }
     };
 
-    fetchData();
+    if (BACKEND_URL && token) fetchData();
   }, [id, token]);
 
   /* ---------------- HANDLE ADD EXPENSE ---------------- */

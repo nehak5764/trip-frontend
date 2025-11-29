@@ -265,7 +265,7 @@ import { useAuth } from "../context/AuthContext";
 import { ArrowLeftCircle, Plus, User } from "lucide-react";
 import { BarChart, Bar, XAxis, ResponsiveContainer, Cell } from "recharts";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function PollsPage() {
   const { id } = useParams();
@@ -288,7 +288,7 @@ export default function PollsPage() {
         setLoading(false);
       }
     };
-    fetchPolls();
+    if (BACKEND_URL && token) fetchPolls();
   }, [id, token]);
 
   const addOption = () =>

@@ -194,7 +194,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Upload, Download, Trash2, ArrowLeftCircle } from "lucide-react";
 
-const BACKEND_URL = "http://localhost:5000";
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function GalleryPage() {
   const { id } = useParams();
@@ -216,7 +216,7 @@ export default function GalleryPage() {
         console.error("❌ Error fetching gallery:", err);
       }
     };
-    fetchImages();
+    if (BACKEND_URL && token) fetchImages();
   }, [id, token]);
 
   /* ---------------- HANDLE UPLOAD ---------------- */
@@ -255,9 +255,12 @@ export default function GalleryPage() {
     e.stopPropagation();
     if (!window.confirm("🗑️ Delete this image permanently?")) return;
     try {
-      await axios.delete(`${BACKEND_URL}/api/trips/${id}/gallery/${imageId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `${BACKEND_URL}/api/trips/${id}/gallery/${imageId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setImages((prev) => prev.filter((img) => img._id !== imageId));
       alert("✅ Image deleted successfully!");
     } catch (err) {

@@ -108,6 +108,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { UserPlus } from "lucide-react";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+
 export default function Register() {
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
@@ -126,7 +128,10 @@ export default function Register() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/signup", formData);
+      const res = await axios.post(
+        `${BACKEND_URL}/api/auth/signup`,
+        formData
+      );
       if (res.data?.token) {
         login(res.data.user, res.data.token);
         navigate("/dashboard");

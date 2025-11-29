@@ -17,8 +17,16 @@ export const connectSocket = (token) => {
     socket.disconnect();
   }
 
-  // Initialize new socket connection
-  socket = io("http://localhost:5000", {
+  // Use environment variable for backend URL
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  if (!backendUrl) {
+    console.error("❌ VITE_BACKEND_URL is not defined!");
+    return;
+  }
+
+  // Initialize socket connection
+  socket = io(backendUrl, {
     transports: ["websocket"],
     withCredentials: true,
     auth: { token },
@@ -49,15 +57,13 @@ export const disconnectSocket = () => {
 };
 
 /**
- * Get the current socket instance
+ * Get current socket instance
  * @returns {Socket | null}
  */
 export const getSocket = () => socket;
 
 /**
  * Safe emit function
- * @param {string} event
- * @param {any} payload
  */
 export const emitEvent = (event, payload) => {
   if (socket && socket.connected) {

@@ -235,6 +235,8 @@ import { useAuth } from "../context/AuthContext";
 import TripCountdown from "../components/TripCountdown";
 import WeatherToday from "../components/WeatherToday";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env-based API URL
+
 export default function Dashboard() {
   const { user, token } = useAuth();
   const [trips, setTrips] = useState([]);
@@ -244,7 +246,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/trips", {
+        const res = await axios.get(`${BACKEND_URL}/api/trips`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTrips(res.data);
@@ -255,7 +257,7 @@ export default function Dashboard() {
       }
     };
 
-    if (token) fetchTrips();
+    if (token && BACKEND_URL) fetchTrips();
   }, [token]);
 
   const handleDeleteTrip = (tripId) => {

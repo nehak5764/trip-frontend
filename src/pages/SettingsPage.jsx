@@ -147,13 +147,14 @@
 
 
 
-
 import { useState } from "react";
 import axios from "axios";
 import { Bell, Moon, Sun, Lock, ArrowLeftCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
+
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
 
 export default function SettingsPage() {
   const { token } = useAuth();
@@ -174,7 +175,7 @@ export default function SettingsPage() {
 
     try {
       await axios.put(
-        "http://localhost:5000/api/users/change-password",
+        `${BACKEND_URL}/api/users/change-password`,
         { currentPassword, newPassword },
         { headers: { Authorization: `Bearer ${token}` } }
       );

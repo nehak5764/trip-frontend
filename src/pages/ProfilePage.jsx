@@ -192,6 +192,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { User, Mail, MapPin, Edit3, Save, X, ArrowLeftCircle } from "lucide-react";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL; // ✅ use env, not localhost
+
 export default function ProfilePage() {
   const { user, token, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -210,7 +212,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/users/stats", {
+        const res = await axios.get(`${BACKEND_URL}/api/users/stats`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStats(res.data);
@@ -219,7 +221,7 @@ export default function ProfilePage() {
       }
     };
 
-    if (token) fetchStats();
+    if (token && BACKEND_URL) fetchStats();
   }, [token]);
 
   const handleUpdate = async () => {
@@ -232,7 +234,7 @@ export default function ProfilePage() {
       setLoading(true);
       setSuccess("");
       const res = await axios.put(
-        "http://localhost:5000/api/users/update",
+        `${BACKEND_URL}/api/users/update`,
         { name, email },
         {
           headers: {
